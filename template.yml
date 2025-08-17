@@ -1,0 +1,87 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Portfolio contact form backend with public and private Lambdas.
+
+Parameters:
+  RecaptchaSecretName:
+    Type: String
+    Description: The name of the secret in AWS Secrets Manager.
+    Default: PortfolioRecaptchaSecret
+
+  PrivateFunctionName:
+    Type: String
+    Description: The name of the private email sending Lambda function.
+    Default: PortfolioSendEmailFunction
+
+Resources:
+  PrivateEmailFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Ref PrivateFunctionName
+      CodeUri: private-lambda/
+      Handler: app.handler
+      Runtime: nodejs18.x
+      Architectures: [arm64]
+      Policies:
+        - SESCrudPolicy:
+            IdentityName: your-verified-sender-email@example.com
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /send-email
+            Method: post
+            RestApiId: !Ref PortfolioApi
+            Auth:
+              ApiKeyRequired: true
+
+  PublicVerifyFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: PortfolioCaptchaVerifyFunction
+      CodeUri: public-lambda/
+      Handler: app.handler
+      Runtime: nodejs18.x
+      Architectures: [arm64]
+      Environment:
+        Variables:
+          SECRET_NAME: !Ref RecaptchaSecretName
+          PRIVATE_FUNCTION_NAME: !Ref PrivateFunctionName
+          REGION: us-east-1
+      Policies:
+        - Statement:
+          - Effect: Allow
+            Action:
+              - secretsmanager:GetSecretValue
+            Resource: !Sub 'arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:${RecaptchaSecretName}-*'
+        - LambdaInvokePolicy:
+            FunctionName: !Ref PrivateFunctionName
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /contact
+            Method: post
+            RestApiId: !Ref PortfolioApi
+
+  PortfolioApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: prod
+      Cors:
+        AllowMethods: "'POST,OPTIONS'"
+        AllowHeaders: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
+        AllowOrigin: "'*'"
+      Auth:
+        ApiKeyRequired: false
+        UsagePlan:
+          CreateUsagePlan: PER_API
+          UsagePlanName: PortfolioUsagePlan
+          Description: Usage plan for the portfolio contact form
+          Quota: { Limit: 1000, Period: DAY }
+          Throttle: { BurstLimit: 5, RateLimit: 2 }
+
+Outputs:
+  ApiUrl:
+    Description: "API Gateway endpoint URL for the public function"
+    Value: !Sub "https://${PortfolioApi}.execute-api.${AWS::Region}.amazonaws.com/prod/contact"
