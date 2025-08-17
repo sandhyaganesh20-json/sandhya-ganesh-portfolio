@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Sandhya Ganesh - Software Engineer specializing in Backend & Cloud-native systems. Explore my projects, skills, and experience.">
+    <meta name="keywords" content="Sandhya Ganesh, Software Engineer, Backend Developer, Cloud Engineer, AWS, Node.js, Microservices, Portfolio">
+    <title>Sandhya Ganesh - Software Engineer – Backend & Cloud</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc; /* Soft Gray */
+            color: #1e293b; /* Dark Slate */
+        }
+        .gradient-text {
+            background: linear-gradient(to right, #3b82f6, #2563eb); /* Electric Blue Gradient */
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            border-color: #3b82f6;
+        }
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .timeline::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 18px;
+            height: 100%;
+            width: 4px;
+            background: #e2e8f0;
+        }
+        .timeline-logo-container {
+            position: absolute;
+            top: 0;
+            left: -10px;
+            width: 56px; 
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+        }
+        .timeline-logo {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #ffffff;
+            border: 4px solid #f8fafc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body class="text-slate-700">
+
+    <!-- Header -->
+    <header class="bg-white/80 backdrop-blur-sm fixed top-0 left-0 right-0 z-50 border-b border-slate-200">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="https://www.linkedin.com/in/sandhyaganesh/" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:text-blue-700">
+                <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+            </a>
+            <nav class="hidden md:flex space-x-8 text-slate-600">
+                <a href="#about" class="hover:text-blue-600 transition-colors">About</a>
+                <a href="#skills" class="hover:text-blue-600 transition-colors">Skills</a>
+                <a href="#experience" class="hover:text-blue-600 transition-colors">Experience</a>
+                <a href="#projects" class="hover:text-blue-600 transition-colors">Projects</a>
+                <a href="#contact-section" class="hover:text-blue-600 transition-colors">Contact</a>
+            </nav>
+            <button id="mobile-menu-button" class="md:hidden text-slate-700 focus:outline-none">
+                <i data-lucide="menu"></i>
+            </button>
+        </div>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden px-6 pb-4 bg-white border-b border-slate-200">
+            <a href="#about" class="block py-2 hover:text-blue-600 transition-colors">About</a>
+            <a href="#skills" class="block py-2 hover:text-blue-600 transition-colors">Skills</a>
+            <a href="#experience" class="block py-2 hover:text-blue-600 transition-colors">Experience</a>
+            <a href="#projects" class="block py-2 hover:text-blue-600 transition-colors">Projects</a>
+            <a href="#contact-section" class="block py-2 hover:text-blue-600 transition-colors">Contact</a>
+        </div>
+    </header>
+
+    <main class="pt-24">
+        <!-- Hero Section -->
+        <section id="home" class="container mx-auto px-6 py-20 md:py-32 flex flex-col md:flex-row items-center">
+            <div class="md:w-3/5 text-center md:text-left">
+                <h1 class="text-4xl md:text-6xl font-extrabold text-slate-900 leading-tight fade-in">
+                    Sandhya Ganesh
+                </h1>
+                <h2 class="text-2xl md:text-3xl font-semibold gradient-text mt-2 fade-in" style="transition-delay: 150ms;">Software Engineer – Backend & Cloud</h2>
+                <p class="mt-6 text-lg md:text-xl text-slate-600 max-w-xl mx-auto md:mx-0 fade-in" style="transition-delay: 300ms;">
+                    Building scalable, secure, and cloud-native systems.
+                </p>
+                <div class="mt-10 flex justify-center md:justify-start gap-4 fade-in" style="transition-delay: 450ms;">
+                    <a href="#contact-section" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-lg transition-transform hover:scale-105">Get in Touch</a>
+                    <a href="./Sandhya_Ganesh_Resume.pdf" download class="bg-slate-200 hover:bg-slate-300 text-slate-800 font-bold py-3 px-8 rounded-lg transition-transform hover:scale-105 flex items-center gap-2">
+                        <i data-lucide="download"></i> Resume
+                    </a>
+                </div>
+            </div>
+            <div class="md:w-2/5 mt-12 md:mt-0 flex justify-center fade-in">
+                <img src="https://placehold.co/400x400/e0f2fe/3b82f6?text=SG" alt="Sandhya Ganesh Professional Headshot" class="rounded-full w-64 h-64 md:w-80 md:h-80 object-cover shadow-2xl">
+            </div>
+        </section>
+
+        <!-- About Me -->
+        <section id="about" class="py-20 bg-white">
+            <div class="container mx-auto px-6">
+                <div class="max-w-4xl mx-auto text-center fade-in">
+                    <h2 class="text-3xl font-bold text-slate-900 mb-4">About Me</h2>
+                    <div class="w-24 h-1 bg-blue-600 mx-auto mb-8"></div>
+                    <p class="text-lg text-slate-600 leading-relaxed">
+                        With over 4 years of experience, I am a results-driven Software Engineer passionate about designing and building the backbone of modern applications. My expertise lies in creating scalable backend systems, robust API integrations, and optimizing distributed systems on cloud platforms like AWS. I thrive on solving complex problems and am dedicated to writing clean, efficient, and maintainable code.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Skills Section -->
+        <section id="skills" class="py-20">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12 fade-in">
+                    <h2 class="text-3xl font-bold text-slate-900 mb-2">Technical Skills</h2>
+                    <p class="text-slate-600">My toolbox for building robust applications.</p>
+                </div>
+                <div class="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+                    <div class="card p-6 text-center fade-in"><i class="w-12 h-12 mx-auto text-blue-600" data-lucide="braces"></i><p class="mt-2 font-semibold">Node.js</p></div>
+                    <div class="card p-6 text-center fade-in"><i class="w-12 h-12 mx-auto text-blue-600" data-lucide="cloud"></i><p class="mt-2 font-semibold">AWS</p><p class="text-sm text-slate-500">Lambda, ECS, SQS, Kinesis</p></div>
+                    <div class="card p-6 text-center fade-in"><i class="w-12 h-12 mx-auto text-blue-600" data-lucide="database"></i><p class="mt-2 font-semibold">Databases</p><p class="text-sm text-slate-500">SQL & NoSQL</p></div>
+                    <div class="card p-6 text-center fade-in"><i class="w-12 h-12 mx-auto text-blue-600" data-lucide="container"></i><p class="mt-2 font-semibold">Docker & ECS</p></div>
+                    <div class="card p-6 text-center fade-in"><i class="w-12 h-12 mx-auto text-blue-600" data-lucide="key-round"></i><p class="mt-2 font-semibold">OAuth 2.0</p></div>
+                    <div class="card p-6 text-center fade-in"><i class="w-12 h-12 mx-auto text-blue-600" data-lucide="git-branch-plus"></i><p class="mt-2 font-semibold">GitLab CI/CD</p></div>
+                    <div class="card p-6 text-center fade-in"><i class="w-12 h-12 mx-auto text-blue-600" data-lucide="area-chart"></i><p class="mt-2 font-semibold">Cloud Monitoring</p></div>
+                    <div class="card p-6 text-center fade-in"><i class="w-12 h-12 mx-auto text-blue-600" data-lucide="network"></i><p class="mt-2 font-semibold">Microservices</p></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Experience Section -->
+        <section id="experience" class="py-20 bg-white">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12 fade-in">
+                    <h2 class="text-3xl font-bold text-slate-900 mb-2">Career Journey</h2>
+                    <p class="text-slate-600">My professional experience and growth.</p>
+                </div>
+                <div class="max-w-2xl mx-auto relative timeline">
+                    <!-- 7-Eleven -->
+                    <div class="relative mb-12 pl-12 fade-in">
+                        <div class="timeline-logo-container">
+                            <div class="timeline-logo">
+                                <img src="./7_Eleven_Logo.png" alt="7-Eleven Logo Placeholder">
+                            </div>
+                        </div>
+                        <h3 class="font-bold text-xl text-slate-900">Software Engineer</h3>
+                        <p class="font-semibold text-blue-600">7-Eleven (via ResolveTech Solutions)</p>
+                        <p class="text-sm text-slate-500 mb-3">May 2023 - Present</p>
+                        <ul class="list-disc list-inside text-slate-600 space-y-1">
+                            <li>Built and scaled REST APIs for a marketplace integration generating $1M+ in sales.</li>
+                            <li>Integrated Stripe for payment processing and automated reconciliation.</li>
+                            <li>Engineered high-volume data pipelines using AWS Kinesis and SQS.</li>
+                        </ul>
+                    </div>
+                    <!-- Walmart -->
+                    <div class="relative pl-12 fade-in">
+                         <div class="timeline-logo-container">
+                            <div class="timeline-logo">
+                                <img src="./Walmart_Logo.svg" alt="Walmart Logo Placeholder">
+                            </div>
+                        </div>
+                        <h3 class="font-bold text-xl text-slate-900">Data Science Intern</h3>
+                        <p class="font-semibold text-blue-600">Walmart, Inc.</p>
+                        <p class="text-sm text-slate-500 mb-3">May 2022 - Aug 2022</p>
+                        <ul class="list-disc list-inside text-slate-600 space-y-1">
+                            <li>Improved machine learning model accuracy by 17% through automated feature selection.</li>
+                            <li>Developed Tableau dashboards for actionable supply chain insights.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Projects Section -->
+        <section id="projects" class="py-20">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12 fade-in">
+                    <h2 class="text-3xl font-bold text-slate-900 mb-2">Key Projects</h2>
+                    <p class="text-slate-600">Highlights of my impactful work.</p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8">
+                    <div class="card p-6 fade-in">
+                        <div class="flex items-center gap-4 mb-4">
+                            <div class="bg-blue-100 p-3 rounded-full">
+                                <i data-lucide="shopping-cart" class="text-blue-600"></i>
+                            </div>
+                            <h3 class="font-bold text-xl text-slate-900">Marketplace Integration</h3>
+                        </div>
+                        <p class="text-slate-600">Developed a third-party marketplace platform that processed thousands of daily transactions and generated over $1M in sales within its first six months.</p>
+                    </div>
+                    <div class="card p-6 fade-in">
+                         <div class="flex items-center gap-4 mb-4">
+                            <div class="bg-blue-100 p-3 rounded-full">
+                                <i data-lucide="credit-card" class="text-blue-600"></i>
+                            </div>
+                            <h3 class="font-bold text-xl text-slate-900">Payment Reconciliation</h3>
+                        </div>
+                        <p class="text-slate-600">Engineered a robust payment reconciliation system with Stripe, achieving near 100% data accuracy and streamlining financial reporting for e-commerce operations.</p>
+                    </div>
+                    <div class="card p-6 fade-in">
+                        <div class="flex items-center gap-4 mb-4">
+                            <div class="bg-blue-100 p-3 rounded-full">
+                                <i data-lucide="database-zap" class="text-blue-600"></i>
+                            </div>
+                            <h3 class="font-bold text-xl text-slate-900">Real-Time Data Pipeline</h3>
+                        </div>
+                        <p class="text-slate-600">Architected a high-throughput, real-time data pipeline using AWS Kinesis and SQS to process millions of inventory updates daily with low latency.</p>
+                    </div>
+                    <div class="card p-6 fade-in">
+                        <div class="flex items-center gap-4 mb-4">
+                            <div class="bg-blue-100 p-3 rounded-full">
+                                <i data-lucide="lightbulb" class="text-blue-600"></i>
+                            </div>
+                            <h3 class="font-bold text-xl text-slate-900">Fun Fact: This Portfolio</h3>
+                        </div>
+                        <p class="text-slate-600">The contact form on this website is powered by a serverless backend built with AWS Lambda, API Gateway, and SES, showcasing a practical use of cloud technology.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact-section" class="py-20 bg-slate-900 text-white">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12 fade-in">
+                    <h2 class="text-3xl font-bold mb-2">Let's Connect</h2>
+                    <p class="text-slate-400">Have a question or want to work together? Drop me a line.</p>
+                </div>
+                <div class="max-w-xl mx-auto fade-in">
+                    <form action="#" method="POST" class="space-y-6">
+                        <input type="text" name="name" placeholder="Your Name" class="w-full bg-slate-800 border border-slate-700 rounded-lg py-3 px-4 text-white focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                        <input type="email" name="email" placeholder="Your Email" class="w-full bg-slate-800 border border-slate-700 rounded-lg py-3 px-4 text-white focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                        <textarea name="message" rows="5" placeholder="Your Message" class="w-full bg-slate-800 border border-slate-700 rounded-lg py-3 px-4 text-white focus:outline-none focus:ring-2 focus:ring-blue-500" required></textarea>
+                        <div class="text-center">
+                            <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-12 rounded-lg transition-transform hover:scale-105 w-full md:w-auto">Send Message</button>
+                        </div>
+                    </form>
+                    <div class="mt-12 flex justify-center gap-8">
+                        <a href="mailto:sandhyaganesh359@gmail.com" class="text-slate-400 hover:text-blue-500"><i data-lucide="mail" class="w-8 h-8"></i></a>
+                        <a href="https://github.com/sandhyaganesh20-json" target="_blank" class="text-slate-400 hover:text-blue-500"><i data-lucide="github" class="w-8 h-8"></i></a>
+                        <a href="https://www.linkedin.com/in/sandhyaganesh/" target="_blank" class="text-slate-400 hover:text-blue-500"><i data-lucide="linkedin" class="w-8 h-8"></i></a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="py-6 bg-slate-900 border-t border-slate-800">
+        <div class="container mx-auto px-6 text-center text-slate-500">
+            <p>&copy; 2025 Sandhya Ganesh. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+
+        // Mobile menu toggle
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Scroll-in animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+    </script>
+
+</body>
+</html>
