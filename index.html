@@ -11,6 +11,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <style>
         body {
             font-family: 'Inter', sans-serif;
@@ -273,13 +274,17 @@
                     <p class="text-slate-400">Have a question or want to work together? Drop me a line.</p>
                 </div>
                 <div class="max-w-xl mx-auto fade-in">
-                    <form action="#" method="POST" class="space-y-6">
-                        <input type="text" name="name" placeholder="Your Name" class="w-full bg-slate-800 border border-slate-700 rounded-lg py-3 px-4 text-white focus:outline-none focus:ring-2 focus:ring-blue-500" required>
-                        <input type="email" name="email" placeholder="Your Email" class="w-full bg-slate-800 border border-slate-700 rounded-lg py-3 px-4 text-white focus:outline-none focus:ring-2 focus:ring-blue-500" required>
-                        <textarea name="message" rows="5" placeholder="Your Message" class="w-full bg-slate-800 border border-slate-700 rounded-lg py-3 px-4 text-white focus:outline-none focus:ring-2 focus:ring-blue-500" required></textarea>
+                    <form id="contact-form" class="space-y-6">
+                        <input type="text" id="name" name="name" placeholder="Your Name" class="w-full bg-slate-800 border border-slate-700 rounded-lg py-3 px-4 text-white focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                        <input type="email" id="email" name="email" placeholder="Your Email" class="w-full bg-slate-800 border border-slate-700 rounded-lg py-3 px-4 text-white focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                        <textarea id="message" name="message" rows="5" placeholder="Your Message" class="w-full bg-slate-800 border border-slate-700 rounded-lg py-3 px-4 text-white focus:outline-none focus:ring-2 focus:ring-blue-500" required></textarea>
+                        <div class="my-6">
+                            <div class="g-recaptcha" data-sitekey="6Lf9TKkrAAAAABNMvdSKHM3r9Qlag1gtIPaeMUqE"></div>
+                        </div>
                         <div class="text-center">
                             <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-12 rounded-lg transition-transform hover:scale-105 w-full md:w-auto">Send Message</button>
                         </div>
+                        <p id="form-status" class="text-center h-4"></p>
                     </form>
                     <div class="mt-12 flex justify-center gap-8">
                         <a href="mailto:sandhyaganesh359@gmail.com" class="text-slate-400 hover:text-blue-500"><i data-lucide="mail" class="w-8 h-8"></i></a>
@@ -321,6 +326,56 @@
 
         document.querySelectorAll('.fade-in').forEach(el => {
             observer.observe(el);
+        });
+        
+        // Contact Form Submission with reCAPTCHA
+        const contactForm = document.getElementById('contact-form');
+        const formStatus = document.getElementById('form-status');
+
+        contactForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const message = document.getElementById('message').value;
+            const recaptchaToken = grecaptcha.getResponse();
+
+            if (!recaptchaToken) {
+                formStatus.textContent = 'Please complete the reCAPTCHA.';
+                formStatus.style.color = '#f87171'; // Red color for error
+                return;
+            }
+            
+            const apiGatewayUrl = 'YOUR_PUBLIC_API_GATEWAY_URL_HERE'; // <-- PASTE YOUR PUBLIC API GATEWAY URL HERE
+
+            formStatus.textContent = 'Sending...';
+
+            try {
+                const response = await fetch(apiGatewayUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ name, email, message, recaptchaToken })
+                });
+
+                if (response.ok) {
+                    formStatus.textContent = 'Message sent successfully!';
+                    formStatus.style.color = '#34d399'; // Green color for success
+                    contactForm.reset();
+                    grecaptcha.reset();
+                } else {
+                    throw new Error('Failed to send message.');
+                }
+            } catch (error) {
+                console.error('Form submission error:', error);
+                formStatus.textContent = 'An error occurred. Please try again.';
+                formStatus.style.color = '#f87171'; // Red color for error
+            }
+
+            setTimeout(() => {
+                formStatus.textContent = '';
+            }, 5000);
         });
     </script>
 
