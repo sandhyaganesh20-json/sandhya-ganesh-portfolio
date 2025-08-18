@@ -28,7 +28,7 @@ export const handler = async (event) => {
         if(!event.body) {
             return {
                 statusCode: 400,
-                headers: { "Access-Control-Allow-Origin": "*", "Content-Type": "application/json" },
+                headers: { "Access-Control-Allow-Origin": "*"},
                 body: JSON.stringify({ message: "Request body is missing." }),
             };
         }
@@ -40,7 +40,7 @@ export const handler = async (event) => {
         if (error) {
             return {
                 statusCode: 400,
-                headers: { "Access-Control-Allow-Origin": "*", "Content-Type": "application/json" },
+                headers: { "Access-Control-Allow-Origin": "*" },
                 body: JSON.stringify({ message: "Invalid input.", details: error.details }),
             };
         }
@@ -69,9 +69,9 @@ export const handler = async (event) => {
         const invokeCommand = new InvokeCommand(invokeParams);
         await lambdaClient.send(invokeCommand);
 
-        return { statusCode: 200, headers: { "Access-Control-Allow-Origin": "*", "Content-Type": "application/json" }, body: JSON.stringify({ message: "Email sent successfully!" }) };
+        return { statusCode: 200, headers: { "Access-Control-Allow-Origin": "*" }, body: JSON.stringify({ message: "Email sent successfully!" }) };
     } catch (error) {
         console.error("Error:", error);
-        return { statusCode: 500, headers: { "Access-Control-Allow-Origin": "*", "Content-Type": "application/json" }, body: JSON.stringify({ message: "reCAPTCHA verfication failed" }) };
+        return { statusCode: 500, headers: { "Access-Control-Allow-Origin": "*" }, body: JSON.stringify({ message: "reCAPTCHA verfication failed" }) };
     }
 };

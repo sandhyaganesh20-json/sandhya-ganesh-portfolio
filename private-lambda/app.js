@@ -31,7 +31,7 @@ export const handler = async (event) => {
   if (error) {
     return {
         statusCode: 400,
-        headers: { "Access-Control-Allow-Origin": "*", "Content-Type": "application/json" },
+        headers: { "Access-Control-Allow-Origin": "*" },
         body: JSON.stringify({ message: "Invalid email addresses", details: error.details }),
     };
   }
@@ -51,9 +51,9 @@ export const handler = async (event) => {
 
   try {
     await sesClient.send(new SendEmailCommand(emailParams));
-    return { statusCode: 200, headers: { "Access-Control-Allow-Origin": "*", "Content-Type": "application/json" }, body: JSON.stringify({ message: "Email sent successfully!" }) };
+    return { statusCode: 200, headers: { "Access-Control-Allow-Origin": "*" }, body: JSON.stringify({ message: "Email sent successfully!" }) };
   } catch (error) {
     console.error("Failed to send email:", error);
-    return { statusCode: 500, headers: { "Access-Control-Allow-Origin": "*", "Content-Type": "application/json" }, body: JSON.stringify({ message: "Failed to send email" }) };
+    return { statusCode: 500, headers: { "Access-Control-Allow-Origin": "*" }, body: JSON.stringify({ message: "Failed to send email" }) };
   }
 };
