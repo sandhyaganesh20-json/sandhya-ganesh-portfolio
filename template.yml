@@ -14,23 +14,51 @@ Parameters:
     Default: PortfolioSendEmailFunction
 
 Resources:
+  # --- Custom Managed Policy for SES Permissions ---
+  SendEmailManagedPolicy:
+    Type: AWS::IAM::ManagedPolicy
+    Properties:
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Action:
+              - ses:SendEmail
+            Resource: !Sub 'arn:aws:ses:${AWS::Region}:${AWS::AccountId}:identity/*'
+
+  # --- Explicit IAM Role for the Private Function ---
+  PrivateFunctionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - lambda.amazonaws.com
+            Action:
+              - sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole # AWS managed policy for logging
+        - !Ref SendEmailManagedPolicy # Attach our custom SES policy
+
+  # --- Private Lambda (Sends the Email) ---
   PrivateEmailFunction:
     Type: AWS::Serverless::Function
     Properties:
       FunctionName: !Ref PrivateFunctionName
-      Description: "Forcing a code update on August 18, 2025"
       CodeUri: private-lambda/
       Handler: app.handler
       Runtime: nodejs18.x
       Architectures: [arm64]
+      Timeout: 60
       Environment:
         Variables:
-          REGION: us-east-1
+          REGION: !Ref AWS::Region
           SENDER_EMAIL: "default@example.com"
           RECIPIENT_EMAIL: "default@example.com"
-      Policies:
-        - SESCrudPolicy:
-            IdentityName: 'arn:aws:ses:${AWS::Region}:${AWS::AccountId}:identity/*'
+      Role: !GetAtt PrivateFunctionRole.Arn # Use the explicitly defined role
       Events:
         Api:
           Type: Api
@@ -41,6 +69,7 @@ Resources:
             Auth:
               ApiKeyRequired: true
 
+  # --- Public Lambda (Verifies reCAPTCHA) ---
   PublicVerifyFunction:
     Type: AWS::Serverless::Function
     Properties:
@@ -49,11 +78,12 @@ Resources:
       Handler: app.handler
       Runtime: nodejs18.x
       Architectures: [arm64]
+      Timeout: 60
       Environment:
         Variables:
           SECRET_NAME: !Ref RecaptchaSecretName
           PRIVATE_FUNCTION_NAME: !Ref PrivateFunctionName
-          REGION: us-east-1
+          REGION: !Ref AWS::Region
       Policies:
         - Statement:
           - Effect: Allow
@@ -70,6 +100,7 @@ Resources:
             Method: post
             RestApiId: !Ref PortfolioApi
 
+  # --- API Gateway Definition ---
   PortfolioApi:
     Type: AWS::Serverless::Api
     Properties:
@@ -77,7 +108,7 @@ Resources:
       Cors:
         AllowMethods: "'POST,OPTIONS'"
         AllowHeaders: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
-        AllowOrigin: '*'
+        AllowOrigin: "'*'"
       Auth:
         ApiKeyRequired: false
         UsagePlan:

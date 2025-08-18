@@ -18,8 +18,6 @@ const schema = Joi.object({
 async function getRecaptchaSecret() {
     const command = new GetSecretValueCommand({ SecretId: process.env.SECRET_NAME });
     const response = await secretsManagerClient.send(command);
-    console.log("Fetched secret:", response);
-    console.log("reCAPTCHA Secret:", JSON.parse(response.SecretString).reCAPTCHA_Secret);
     return JSON.parse(response.SecretString).reCAPTCHA_Secret;
 }
 
@@ -47,7 +45,6 @@ export const handler = async (event) => {
         
         const { name, email, message, recaptchaToken } = value;
 
-        console.log("Validated Data:", { name, email, message, recaptchaToken });
 
         // 2. Verify reCAPTCHA
         const recaptchaSecret = await getRecaptchaSecret();
@@ -69,6 +66,7 @@ export const handler = async (event) => {
         const invokeCommand = new InvokeCommand(invokeParams);
         await lambdaClient.send(invokeCommand);
 
+        console.log("Private Lambda invoked successfully.");
         return { statusCode: 200, headers: { "Access-Control-Allow-Origin": "*" }, body: JSON.stringify({ message: "Email sent successfully!" }) };
     } catch (error) {
         console.error("Error:", error);
