@@ -18,6 +18,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       FunctionName: !Ref PrivateFunctionName
+      Description: "Forcing a code update on August 18, 2025"
       CodeUri: private-lambda/
       Handler: app.handler
       Runtime: nodejs18.x
@@ -29,7 +30,7 @@ Resources:
           RECIPIENT_EMAIL: "default@example.com"
       Policies:
         - SESCrudPolicy:
-            IdentityName: sandhyaganesh359@gmail.com
+            IdentityName: 'arn:aws:ses:${AWS::Region}:${AWS::AccountId}:identity/*'
       Events:
         Api:
           Type: Api
@@ -76,7 +77,7 @@ Resources:
       Cors:
         AllowMethods: "'POST,OPTIONS'"
         AllowHeaders: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
-        AllowOrigin: "'https://sandhyaganesh20-json.github.io'"
+        AllowOrigin: '*'
       Auth:
         ApiKeyRequired: false
         UsagePlan:
