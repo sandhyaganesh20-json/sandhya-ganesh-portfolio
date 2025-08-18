@@ -22,6 +22,11 @@ Resources:
       Handler: app.handler
       Runtime: nodejs18.x
       Architectures: [arm64]
+      Environment:
+        Variables:
+          REGION: us-east-1
+          SENDER_EMAIL: "default@example.com"
+          RECEIPIENT_EMAIL: "default@example.com"
       Policies:
         - SESCrudPolicy:
             IdentityName: your-verified-sender-email@example.com

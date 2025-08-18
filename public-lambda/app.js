@@ -24,6 +24,14 @@ async function getRecaptchaSecret() {
 
 export const handler = async (event) => {
     try {
+        if(!event.body) {
+            return {
+                statusCode: 400,
+                headers: { "Access-Control-Allow-Origin": "*" },
+                body: JSON.stringify({ message: "Request body is missing." }),
+            };
+        }
+
         const requestBody = JSON.parse(event.body);
 
         // 1. Validate incoming data

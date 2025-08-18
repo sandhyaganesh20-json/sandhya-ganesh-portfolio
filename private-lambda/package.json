@@ -1,0 +1,9 @@
+{
+  "name": "private-lambda",
+  "version": "1.0.0",
+  "type": "module",
+  "dependencies": {
+    "@aws-sdk/client-ses": "^3.525.0",
+    "joi": "^17.12.2"
+  }
+}
