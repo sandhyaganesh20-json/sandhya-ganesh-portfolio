@@ -49,6 +49,8 @@ export const handler = async (event) => {
     ReplyToAddresses: [email],
   };
 
+  console.log("Email Params:", JSON.stringify(emailParams));
+
   try {
     await sesClient.send(new SendEmailCommand(emailParams));
     return { statusCode: 200, headers: { "Access-Control-Allow-Origin": "*" }, body: JSON.stringify({ message: "Email sent successfully!" }) };
