@@ -29,7 +29,7 @@ Resources:
           RECIPIENT_EMAIL: "default@example.com"
       Policies:
         - SESCrudPolicy:
-            IdentityName: your-verified-sender-email@example.com
+            IdentityName: sandhyaganesh359@gmail.com
       Events:
         Api:
           Type: Api
