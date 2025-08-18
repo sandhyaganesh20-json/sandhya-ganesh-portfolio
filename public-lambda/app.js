@@ -19,6 +19,7 @@ async function getRecaptchaSecret() {
     const command = new GetSecretValueCommand({ SecretId: process.env.SECRET_NAME });
     const response = await secretsManagerClient.send(command);
     console.log("Fetched secret:", response);
+    console.log("reCAPTCHA Secret:", JSON.parse(response.SecretString).reCAPTCHA_Secret);
     return JSON.parse(response.SecretString).reCAPTCHA_Secret;
 }
 
@@ -46,12 +47,15 @@ export const handler = async (event) => {
         
         const { name, email, message, recaptchaToken } = value;
 
+        console.log("Validated Data:", { name, email, message, recaptchaToken });
+
         // 2. Verify reCAPTCHA
         const recaptchaSecret = await getRecaptchaSecret();
         const verificationUrl = `https://www.google.com/recaptcha/api/siteverify?secret=${recaptchaSecret}&response=${recaptchaToken}`;
         const verificationResponse = await fetch(verificationUrl, { method: 'POST' });
         const verificationData = await verificationResponse.json();
 
+        console.log('Verification Data:', JSON.stringify(verificationData));
         if (!verificationData.success) {
             throw new Error("reCAPTCHA verification failed.");
         }
