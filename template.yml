@@ -76,7 +76,7 @@ Resources:
       Cors:
         AllowMethods: "'POST,OPTIONS'"
         AllowHeaders: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
-        AllowOrigin: "'*'"
+        AllowOrigin: "'https://sandhyaganesh20-json.github.io'"
       Auth:
         ApiKeyRequired: false
         UsagePlan:
