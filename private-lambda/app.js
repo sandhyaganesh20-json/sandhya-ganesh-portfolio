@@ -5,9 +5,9 @@ const REGION = process.env.REGION || 'us-east-1'; // Default to us-east-1 if not
 const sesClient = new SESClient({ region: REGION });
 
 const schema = Joi.object({
-    email: Joi.string().email().required().invalid('', null, undefined),
-    senderEmail: Joi.string().email().required().invalid('', null, undefined),
-    recipientEmail: Joi.string().email().required().invalid('', null, undefined),
+    email: Joi.string().email().required().invalid('', null),
+    senderEmail: Joi.string().email().required().invalid('', null),
+    recipientEmail: Joi.string().email().required().invalid('', null),
 });
 
 export const handler = async (event) => {
@@ -22,6 +22,8 @@ export const handler = async (event) => {
   const { name, email, message } = JSON.parse(event.body); //name and message are already validated in the public lambda
   const senderEmail = process.env.SENDER_EMAIL; //the values are set default to protect privacy
   const recipientEmail = process.env.RECIPIENT_EMAIL; //the values are set default to protect privacy
+  console.log("Sender Email:", senderEmail);
+  console.log("Recipient Email:", recipientEmail);
   if(!recipientEmail || !senderEmail) throw new Error("Sender/Recipient email should not be empty");
   
   const { error } = schema.validate({email, senderEmail, recipientEmail});
@@ -29,7 +31,7 @@ export const handler = async (event) => {
   if (error) {
     return {
         statusCode: 400,
-        headers: { "Access-Control-Allow-Origin": "*" },
+        headers: { "Access-Control-Allow-Origin": "*", "Content-Type": "application/json" },
         body: JSON.stringify({ message: "Invalid email addresses", details: error.details }),
     };
   }
@@ -49,9 +51,9 @@ export const handler = async (event) => {
 
   try {
     await sesClient.send(new SendEmailCommand(emailParams));
-    return { statusCode: 200, headers: { "Access-Control-Allow-Origin": "*" }, body: JSON.stringify({ message: "Email sent successfully!" }) };
+    return { statusCode: 200, headers: { "Access-Control-Allow-Origin": "*", "Content-Type": "application/json" }, body: JSON.stringify({ message: "Email sent successfully!" }) };
   } catch (error) {
     console.error("Failed to send email:", error);
-    return { statusCode: 500, headers: { "Access-Control-Allow-Origin": "*" }, body: JSON.stringify({ message: "Failed to send email" }) };
+    return { statusCode: 500, headers: { "Access-Control-Allow-Origin": "*", "Content-Type": "application/json" }, body: JSON.stringify({ message: "Failed to send email" }) };
   }
 };

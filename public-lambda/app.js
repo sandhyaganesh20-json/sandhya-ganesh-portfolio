@@ -9,10 +9,10 @@ const lambdaClient = new LambdaClient({ region: REGION });
 
 // Define the validation schema for the incoming data
 const schema = Joi.object({
-    name: Joi.string().min(2).max(100).required().invalid('', null, undefined),
-    email: Joi.string().email().required().invalid('', null, undefined),
-    message: Joi.string().min(10).max(2000).required().invalid('', null, undefined),
-    recaptchaToken: Joi.string().required().invalid('', null, undefined)
+    name: Joi.string().min(2).max(100).required().invalid('', null),
+    email: Joi.string().email().required().invalid('', null),
+    message: Joi.string().min(10).max(2000).required().invalid('', null),
+    recaptchaToken: Joi.string().required().invalid('', null)
 });
 
 async function getRecaptchaSecret() {
@@ -27,7 +27,7 @@ export const handler = async (event) => {
         if(!event.body) {
             return {
                 statusCode: 400,
-                headers: { "Access-Control-Allow-Origin": "*" },
+                headers: { "Access-Control-Allow-Origin": "*", "Content-Type": "application/json" },
                 body: JSON.stringify({ message: "Request body is missing." }),
             };
         }
@@ -39,7 +39,7 @@ export const handler = async (event) => {
         if (error) {
             return {
                 statusCode: 400,
-                headers: { "Access-Control-Allow-Origin": "*" },
+                headers: { "Access-Control-Allow-Origin": "*", "Content-Type": "application/json" },
                 body: JSON.stringify({ message: "Invalid input.", details: error.details }),
             };
         }
@@ -65,9 +65,9 @@ export const handler = async (event) => {
         const invokeCommand = new InvokeCommand(invokeParams);
         await lambdaClient.send(invokeCommand);
 
-        return { statusCode: 200, headers: { "Access-Control-Allow-Origin": "*" }, body: JSON.stringify({ message: "Email sent successfully!" }) };
+        return { statusCode: 200, headers: { "Access-Control-Allow-Origin": "*", "Content-Type": "application/json" }, body: JSON.stringify({ message: "Email sent successfully!" }) };
     } catch (error) {
         console.error("Error:", error);
-        return { statusCode: 500, headers: { "Access-Control-Allow-Origin": "*" }, body: JSON.stringify({ message: "An error occurred." }) };
+        return { statusCode: 500, headers: { "Access-Control-Allow-Origin": "*", "Content-Type": "application/json" }, body: JSON.stringify({ message: "reCAPTCHA verfication failed" }) };
     }
 };
